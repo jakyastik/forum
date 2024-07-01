@@ -3,3 +3,7 @@ body {
 	flex-direction: column;
 	justify-content: space-between;
 }
+
+.footer {
+	align-self: flex-end;
+}
