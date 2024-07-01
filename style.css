@@ -1,9 +1,23 @@
+.jumbotron {
+	padding: 2rem 1rem;
+	margin-bottom: 2rem;
+	background-color: #e9ecef;
+	border-radius: 0.3rem;
+}
+
+.forum-cover {
+	background-color: #f2f2f2;
+	padding: 40px;
+	border-radius: 10px;
+}
+
+.container {
+	max-width: 1000px;
+}
+
 body {
+	height: 100vh;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-}
-
-.footer {
-	align-self: flex-end;
 }

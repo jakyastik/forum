@@ -40,7 +40,7 @@
 
 <?php 
 
-include 'partials/_loginmodal.php'; 
-include 'partials/_signupmodal.php'; 
+include '_loginmodal.php'; 
+include '_signupmodal.php'; 
 
 ?>

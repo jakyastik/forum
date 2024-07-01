@@ -17,7 +17,6 @@
     
     ?>
 
-
     <!-- categories container starts here -->
     <div class="container">
         <h3 class="mt-5">Categories</h3>
@@ -35,9 +34,9 @@
                 <div class="card my-2">
                     <img src="https://picsum.photos/seed/'.$row['category_name'].'/200" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">'.$row["category_name"].'</h5>
-                        <p class="card-text">'.$row["category_description"].'</p>
-                        <a href="#" class="btn btn-primary">View Threads</a>
+                        <h5 class="card-title"><a href="threads.php?catId='.$row["category_id"].'">'.$row["category_name"].'</a></h5>
+                        <p class="card-text">'. substr($row["category_description"], 0, 120).' ...</p>
+                        <a href="threads.php?catId='.$row["category_id"].'" class="btn btn-primary">View Threads</a>
                     </div>
                 </div>
             </div>';
