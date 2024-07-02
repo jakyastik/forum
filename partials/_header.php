@@ -41,23 +41,12 @@
 
 <?php 
         include "_handleSignup.php";
+        include "_signupmodal.php";
+        include '_loginmodal.php'; 
 
-        if ($successAlert == true) {
-                       echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-     <strong>Holy guacamole!</strong> Account created. Log in to continue. 
-     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-   </div>';
-       
-   } else if ($emailExists == true) {
-                       echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-     <strong>Holy guacamole!</strong> Email already exists. 
-     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-   </div>';
-                   }?>
+        session_start();
 
-<?php 
-
-include '_loginmodal.php'; 
-include '_signupmodal.php'; 
+        // error_reporting(E_ALL);
+        // ini_set('display_errors', 1);
 
 ?>

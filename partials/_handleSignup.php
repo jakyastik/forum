@@ -1,35 +1,39 @@
 <?php
 
-$successAlert = false;
-$passwordMismatch = false;
-$emailExists = false;
+$emailExists = false; 
+$accountCreated = false; 
+$passwordMismatch = false; 
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (isset($_POST['submit_signup']) && ($_SERVER["REQUEST_METHOD"] == "POST")) {
     include '_dbconnect.php';
 
     $signupEmail = $_POST["signupEmail"];
     $signupPassword = $_POST["password"];
     $confirmPass = $_POST["confirmPass"];
 
-
     //check if email exists
-    $sql = "SELECT * FROM `users` WHERE `user_email` = '$signupEmail'";
-    $result = mysqli_query($conn, $sql);
-    $rows = mysqli_num_rows($result);
+    $sqlExists = "SELECT * FROM `users` WHERE `user_email` = '$signupEmail'";
+    $signup_result = mysqli_query($conn, $sqlExists);
+    $rows = mysqli_num_rows($signup_result);
 
     if ( $rows > 0) {
-        //if user exists, simply show alert and reject sign up.
-        $emailExists = true;
-        echo 'User already exists. <a href="/forum/index.php">Back Home</a>';
-
-    
+        //means email exists. can't create account. 
+        $emailExists = true; 
+        header('Location: /forum/index.php?signupsuccess=false&emailexists=true');
+        
     } else if (($signupPassword == $confirmPass) && ($rows == 0)) {
+
         $hash = password_hash($signupPassword, PASSWORD_DEFAULT);
         $sql ="INSERT INTO `users` (`user_email`, `user_pass`) VALUES ('$signupEmail', '$hash');";
-        $result = mysqli_query($conn, $sql);
-        $successAlert = true;
+        $createAccount = mysqli_query($conn, $sql);
+       
+        //if account created successfully. 
+        $accountCreated = true; 
+        header('Location: /forum/index.php?signupsuccess=true');
+        
         
     }  else {
-        echo "password mismatch";
+        $passwordMismatch = true; 
+        header('Location: /forum/index.php?signupsuccess=false&passwordmismatch=true');
     }
 }

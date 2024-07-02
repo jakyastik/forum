@@ -26,6 +26,7 @@
                 
                 echo '
                 <div class="container mt-5" >
+                <p class="font-monospace .fs-6">TOPICS / Javascript</p>
                 <h2>'.$row['thread_title'].'</h2>
                 <p>'.$row['thread_description'].'</p>
                 </div>
@@ -38,7 +39,7 @@
                 $method = $_SERVER['REQUEST_METHOD'];
                 if ($method == 'POST') {
                     //insert comment into comments table table
-                    $comment = $_POST['comment'];
+                    $comment = addslashes($_POST['comment']);
     
                     $sql = "INSERT INTO `comments` (`comment_text`, `thread_id`, `user_id`, `comment_date`) VALUES ('$comment', '$id', '0', current_timestamp());";
                     $result = mysqli_query($conn, $sql);

@@ -13,7 +13,27 @@
 <body>
     <?php 
     include 'partials/_header.php'; 
-    include 'partials/_dbconnect.php';                 
+    include 'partials/_dbconnect.php';     
+    include 'partials/_handleSignup.php';
+
+    $signupsuccess = $_GET['signupsuccess'];
+    $emailexists = $_GET['emailexists'];
+    $passwordmismatch = $_GET['passwordmismatch'];
+
+    if ($signupsuccess == true) {
+        echo "Signup successful";
+        
+    }
+
+    if ($emailexists == true) {
+        echo "Email Exists";
+        
+    }
+
+    if ($passwordmismatch == true) {
+        echo "password mismatch";
+    
+    }
     
     ?>
 
@@ -30,8 +50,8 @@
 
           $name = $row["category_name"];
 
-          echo '<div class="col">
-                <div class="card my-2">
+          echo '<div class="col align-items-start">
+                <div class="card my-4">
                     <div class="card-body">
                         <h4 class=" card-title"><a href="threads.php?catId='.$row["category_id"].'">'.$row["category_name"].'</a></h4>
                         <p class="card-text">'. substr($row["category_description"], 0, 120).' ...</p>

@@ -13,55 +13,96 @@
 <body>
     <div>
         <?php 
+
             include 'partials/_header.php'; 
             include 'partials/_dbconnect.php';  
-            
+
+            //--------------------------------------------------------------------------------------------get category and description
             $id = $_GET['catId'];
             $sql = "SELECT * FROM `categories` WHERE `category_id` = $id";
             $result = mysqli_query($conn, $sql);
             $row = mysqli_fetch_assoc($result);
 
-            echo '<div class="container mt-5 forum-cover">
+            echo '<div class="container mt-5" style="border-bottom:1px solid #ccc; padding:20px 0px; margin:20px auto; ">
                 <h1>'.$row['category_name'].'</h1>
-                <h3>'.$row['category_description'].'</h3>
+                <h4 class="text-secondary">'.$row['category_description'].'</h4>
             </div>';
             
-            ?>
-
-        <?php
-
+            //---------------------------------------------------------------------------------------post a new thread to the database. 
+            
+            $threadSuccess = false; 
+            
+            
             $method = $_SERVER['REQUEST_METHOD'];
-            if ($method == 'POST') {
+            if (isset($_POST['submit_thread']) && ($method == 'POST')) {
                 //insert thread into DB
-                $post_title = $_POST['title'];
-                $post_description = $_POST['description'];
+                $thread_title = addslashes($_POST['title']);
+                $thread_description = addslashes($_POST['description']);
 
-                $sql = "INSERT INTO `threads` (`thread_title`, `thread_description`, `thread_user_id`, `thread_cat_id`, `timestamp`) VALUES ('$post_title', '$post_description', '0', $id, current_timestamp());";
+                $sql = "INSERT INTO `threads` (`thread_title`, `thread_description`, `thread_user_id`, `thread_cat_id`) VALUES ('$thread_title', '$thread_description', '0', '$id');";
                 $result = mysqli_query($conn, $sql);
+
+                if ($result) { // Change here: Added success message
+                    $threadSuccess = true; 
+                } 
             }
             ?>
 
         <!-- Form to Add Questions -->
-        <div class="container mt-5">
-            <h3>Start a Discussion</h3>
 
-            <form action="<?php $_SERVER['REQUEST_URI'] ?>" method="post">
-                <div class="mb-3">
-                    <label for="title" class="form-label">Start a Discussion</label>
-                    <input type="text" class="form-control" name="title" id="title">
-                </div>
-                <div class="mb-3">
-                    <label for="description" class="form-label">Add your bit.</label>
-                    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-success">Submit</button>
-            </form>
-        </div>
+
 
         <div class="container mt-5">
-            <h3>Browse Questions</h3>
+
+            <?php 
+            if ($threadSuccess) {
+                echo '<div class="alert alert-success" role="alert">Yey. We\'ve added your thread to discussion. Awaiting replies. </div>';
+            }
+            ?>
+
+
+            <div style="display:flex; flex-direction:row; justify-content:space-between; height:35px;">
+                <h3>Discussion</h3>
+
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-sm btn-success ms-2" data-bs-toggle="modal"
+                    data-bs-target="#addThread">
+                    Create a Thread
+                </button>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="addThread" tabindex="-1" aria-labelledby="addThread" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="addCommentLabel">Create a Thread</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+                                <div class="mb-3">
+                                    <label for="title" class="form-label">Start a Discussion</label>
+                                    <input type="text" class="form-control" name="title" id="title">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Add your bit.</label>
+                                    <textarea class="form-control" id="description" name="description"
+                                        rows="3"></textarea>
+                                </div>
+                                <button type="submit" name="submit_thread" class="btn btn-success">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
 
             <?php
+
+            
             
             $id = $_GET['catId'];
             $sql = "SELECT * FROM `threads` WHERE `thread_cat_id` = $id ORDER BY `thread_id` DESC";

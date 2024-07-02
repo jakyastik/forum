@@ -1,5 +1,3 @@
-<!-- Modal -->
-
 <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -9,24 +7,7 @@
             </div>
             <div class="modal-body">
 
-                <?php 
-                include "_handleSignup.php";
-
-                if ($successAlert == true) {
-                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-  <strong>Holy guacamole!</strong> Account created. Log in to continue. 
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>';
-                } else if ($emailExists == true) {
-                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-  <strong>Holy guacamole!</strong> Email already exists. 
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>';
-                }
-
-                ?>
-
-                <form action="<?php $_SERVER['REQUEST_URI'] ?>" method="POST">
+                <form action="/forum/partials/_handleSignup.php" method="POST">
                     <div class="mb-3">
                         <label for="signupEmail" class="form-label">Your Email</label>
                         <input type="email" class="form-control" name="signupEmail" id="signupEmail"
@@ -42,12 +23,8 @@
                         <input type="password" id="confirmPass" name="confirmPass" class="form-control">
                     </div>
 
-                    <button type="submit" class="btn btn-success">Sign Up</button>
+                    <button type="submit" name="submit_signup" class="btn btn-success">Sign Up</button>
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success">Sign Up</button>
-                    </div>
                 </form>
 
             </div>
