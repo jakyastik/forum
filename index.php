@@ -34,9 +34,9 @@
                 <div class="card my-2">
                     <img src="https://picsum.photos/seed/'.$row['category_name'].'/200" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title"><a href="threads.php?catId='.$row["category_id"].'">'.$row["category_name"].'</a></h5>
+                        <h5 class=" card-title"><a href="threads.php?catId='.$row["category_id"].'">'.$row["category_name"].'</a></h5>
                         <p class="card-text">'. substr($row["category_description"], 0, 120).' ...</p>
-                        <a href="threads.php?catId='.$row["category_id"].'" class="btn btn-primary">View Threads</a>
+                        <a href="threads.php?catId='.$row["category_id"].'" class="btn btn-success">View Threads</a>
                     </div>
                 </div>
             </div>';
@@ -46,12 +46,12 @@
 
         </div>
 
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+    <?php include 'partials/_footer.php'?>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-        </script>
-
-        <?php include 'partials/_footer.php'?>
 </body>
 
 </html>

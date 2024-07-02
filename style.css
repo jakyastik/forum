@@ -21,3 +21,14 @@ body {
 	flex-direction: column;
 	justify-content: space-between;
 }
+
+.footer {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+p {
+	margin: 0.5em auto;
+}
