@@ -67,7 +67,7 @@
                         </div>
                         <div class="modal-body">
 
-                            <form action="/forum/partials/_handleSignup" method="POST">
+                            <form action="<?php $_SERVER['REQUEST_URI'] ?>" method="POST">
                                 <div class="mb-3">
                                     <div class="form-floating">
                                         <div class="mb-3">

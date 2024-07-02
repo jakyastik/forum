@@ -13,7 +13,7 @@
 <body>
     <?php 
     include 'partials/_header.php'; 
-    include 'partials/_dbconnect.php'; 
+    include 'partials/_dbconnect.php';                 
     
     ?>
 
@@ -32,9 +32,8 @@
 
           echo '<div class="col">
                 <div class="card my-2">
-                    <img src="https://picsum.photos/seed/'.$row['category_name'].'/200" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class=" card-title"><a href="threads.php?catId='.$row["category_id"].'">'.$row["category_name"].'</a></h5>
+                        <h4 class=" card-title"><a href="threads.php?catId='.$row["category_id"].'">'.$row["category_name"].'</a></h4>
                         <p class="card-text">'. substr($row["category_description"], 0, 120).' ...</p>
                         <a href="threads.php?catId='.$row["category_id"].'" class="btn btn-success">View Threads</a>
                     </div>

@@ -35,8 +35,25 @@
 
 
         </div>
+
     </div>
 </nav>
+
+<?php 
+        include "_handleSignup.php";
+
+        if ($successAlert == true) {
+                       echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+     <strong>Holy guacamole!</strong> Account created. Log in to continue. 
+     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+   </div>';
+       
+   } else if ($emailExists == true) {
+                       echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+     <strong>Holy guacamole!</strong> Email already exists. 
+     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+   </div>';
+                   }?>
 
 <?php 
 
