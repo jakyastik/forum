@@ -19,13 +19,12 @@ if (isset($_POST['submit_login']) && ($_SERVER["REQUEST_METHOD"] == "POST")) {
         session_start();
         $_SESSION['loggedIn'] = true;
         $_SESSION['userEmail'] = $loginEmail;
-        header('Location: /forum/index.php?login=true');
-        
+        echo "Logged In with '.$loginEmail.'";        
     } else {
         echo "incorrect data. try again";
     }
 
-
+    header('Location: /forum/index.php?login=true');
     
 }
 

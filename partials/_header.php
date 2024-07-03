@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="index.php">TechDiscuss</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -18,25 +18,42 @@
                 </li>
 
             </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-            <div class="mx-2">
+
+            <?php
+
+                session_start();
+
+                if (isset($_SESSION['loggedIn']) && ($_SESSION['loggedIn'] == true)) {
+                    $username = explode('@', $_SESSION['userEmail']);
+                    
+                    echo '<form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                         <button class="btn btn-outline-success" type="submit">Search</button>
+                         </form>
+                         
+                         <div class="mx-3"> '.$username[0].' <a href="partials/_handleLogout.php">(Log Out)</a> </div>';
+                }
+
+                if ($_SESSION['loggedIn'] != true) {
+                    echo '<div class="mx-2">
                 <a type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#loginModal">Log
                     in</a>
-            </div>
-            <div class="ml-2">
+                 </div>
+                  <div class="ml-2">
                 <a type="button" class="btn btn-outline-success" data-bs-toggle="modal"
                     data-bs-target="#signupModal">Sign
                     Up</a>
-            </div>
+                 </div>';
+                }
+            ?>
+
 
 
 
         </div>
 
     </div>
+
 </nav>
 
 <?php 

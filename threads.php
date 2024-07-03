@@ -67,7 +67,7 @@
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-sm btn-success ms-2" data-bs-toggle="modal"
                     data-bs-target="#addThread">
-                    Create a Thread
+                    + New Thread
                 </button>
             </div>
 
