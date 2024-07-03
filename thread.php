@@ -42,8 +42,9 @@
         if ($method == "POST") {
             //insert comment into comments table table
             $comment = addslashes($_POST["comment"]);
+            $currentUserId = $_SESSION["userId"];
 
-            $sql = "INSERT INTO `comments` (`comment_text`, `thread_id`, `user_id`, `comment_date`) VALUES ('$comment', '$id', '0', current_timestamp());";
+            $sql = "INSERT INTO `comments` (`comment_text`, `thread_id`, `user_id`, `comment_date`) VALUES ('$comment', '$id', '$currentUserId', current_timestamp());";
             $result = mysqli_query($conn, $sql);
         }
         ?>
@@ -111,13 +112,27 @@
             $result = mysqli_query($conn, $sql);
 
             while ($row = mysqli_fetch_assoc($result)) {
+                $comment = $row["comment_text"];
+                $commentId = $row["comment_id"];
+                $commentUserId = $row["user_id"];
+                $commentDate = $row["comment_date"];
+
+                $sql3 = "SELECT user_email FROM `users` where user_id = $commentUserId;";
+                $result3 = mysqli_query($conn, $sql3);
+                $row3 = mysqli_fetch_assoc($result3);
+                $userEmail3 = $row3["user_email"];
+                $username3 = explode("@", $userEmail3);
+
                 echo '
                 <div class="container mt-3" style="background: #f2f2f2; border-radius:10px; padding: 15px;" >
                 <p style="font-size:18px">' .
-                    $row["comment_text"] .
+                    $comment .
+                    '</p>
+                    <p class="form-text">' .
+                    $username3[0] .
                     '</p>
                 <p class="form-text">' .
-                    $row["comment_date"] .
+                    $commentDate .
                     '</p>
                 </div>
                 ';

@@ -35,8 +35,6 @@
 
         $threadSuccess = false;
 
-        //sql query to get user name from user id
-
         $method = $_SERVER["REQUEST_METHOD"];
         if (isset($_POST["submit_thread"]) && $method == "POST") {
             $currentUserId = $_SESSION["userId"];
@@ -109,46 +107,45 @@
             $sql0 = "SELECT * FROM `threads` WHERE `thread_cat_id` = $id ORDER BY `thread_id` DESC";
             $result = mysqli_query($conn, $sql0);
 
-            while ($row = mysqli_fetch_assoc($result)) {
-                $threadId = $row["thread_id"];
-                $threadTitle = $row["thread_title"];
-                $threadDescription = $row["thread_description"];
-                $threadTime = $row["timestamp"];
-                $threadUserId = $row["thread_user_id"];
+            if ($result == true) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $threadId = $row["thread_id"];
+                    $threadTitle = $row["thread_title"];
+                    $threadDescription = $row["thread_description"];
+                    $threadTime = $row["timestamp"];
+                    $threadUserId = $row["thread_user_id"];
 
-                $sql2 = "SELECT user_email FROM `users` where user_id = $threadUserId;";
-                $result2 = mysqli_query($conn, $sql2);
-                $row2 = mysqli_fetch_assoc($result2);
-                $userEmail = $row2["user_email"];
-                $username = explode("@", $userEmail);
+                    $sql2 = "SELECT user_email FROM `users` where user_id = $threadUserId;";
+                    $result2 = mysqli_query($conn, $sql2);
+                    $row2 = mysqli_fetch_assoc($result2);
+                    $userEmail = $row2["user_email"];
+                    $username = explode("@", $userEmail);
 
-                echo '<div class="my-3 d-flex" style="border-bottom:1px solid #ccc; padding:20px 0px;">
+                    echo '<div class="my-3 d-flex" style="border-bottom:1px solid #ccc; padding:20px 0px;">
                 <div class="flex-shrink-2">
                     <img src="images/person-circle.svg" alt="...">
                 </div>
                 <div class="flex-grow-1 ms-3">
                     <h4><a href="thread.php?threadId=' .
-                    $threadId .
-                    '">' .
-                    $threadTitle .
-                    '</a></h4>
+                        $threadId .
+                        '">' .
+                        $threadTitle .
+                        '</a></h4>
                     <p>' .
-                    $threadDescription .
-                    '</p>
+                        $threadDescription .
+                        '</p>
                     <div class="form-text">' .
-                    $username[0] .
-                    '</div>
+                        $username[0] .
+                        '</div>
                 </div>
-            </div>';
+                </div>';
+                }
             }
 
-            if ($noResult) {
-                echo "Be the first person to ask a question";
+            if ($result == false) {
+                echo "No discussions yes. Start one. ";
             }
             ?>
-
-
-
         </div>
     </div>
 

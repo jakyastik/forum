@@ -16,6 +16,29 @@
                 <li class="nav-item">
                     <a class="nav-link" href="contact.php">Contact</a>
                 </li>
+                <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Dropdown
+                          </a>
+                          <ul class="dropdown-menu">
+
+                              <?php
+                              include "_dbconnect.php";
+                              $sqlCategories = "SELECT * FROM `categories`";
+                              $result = mysqli_query($conn, $sqlCategories);
+
+                              while ($row = mysqli_fetch_assoc($result)) {
+                                  $categoryName = $row["category_name"];
+                                  $categoryId = $row["category_id"];
+                                  echo '<li><a class="dropdown-item" href="threads.php?catId=' .
+                                      $categoryId .
+                                      '">' .
+                                      $categoryName .
+                                      "</a></li>";
+                              }
+                              ?>
+                          </ul>
+                        </li>
 
             </ul>
 
@@ -65,7 +88,7 @@ include "_loginmodal.php";
 session_start();
 
 // error_reporting(E_ALL);
-// ini_set('display_errors', 1);
+// ini_set("display_errors", 1);
 
 
 ?>
