@@ -13,49 +13,57 @@
 <body>
     <div>
 
-        <?php 
-            include 'partials/_header.php'; 
-            include 'partials/_dbconnect.php'; 
+        <?php
+        include "partials/_header.php";
+        include "partials/_dbconnect.php";
 
-            //displays thread title and description
-            $id = $_GET['threadId'];
-            $sql = "SELECT * FROM `threads` WHERE `thread_id` = $id";
-            $result = mysqli_query($conn, $sql);
-            
-            while ($row = mysqli_fetch_assoc($result)) {
-                
-                echo '
+        //displays thread title and description
+        $id = $_GET["threadId"];
+        $sql = "SELECT * FROM `threads` WHERE `thread_id` = $id";
+        $result = mysqli_query($conn, $sql);
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo '
                 <div class="container mt-5" >
                 <p class="font-monospace .fs-6">TOPICS / Javascript</p>
-                <h2>'.$row['thread_title'].'</h2>
-                <p>'.$row['thread_description'].'</p>
+                <h2>' .
+                $row["thread_title"] .
+                '</h2>
+                <p>' .
+                $row["thread_description"] .
+                '</p>
                 </div>
                 ';
-        } 
-
+        }
         ?>
 
-        <?php 
-                $method = $_SERVER['REQUEST_METHOD'];
-                if ($method == 'POST') {
-                    //insert comment into comments table table
-                    $comment = addslashes($_POST['comment']);
-    
-                    $sql = "INSERT INTO `comments` (`comment_text`, `thread_id`, `user_id`, `comment_date`) VALUES ('$comment', '$id', '0', current_timestamp());";
-                    $result = mysqli_query($conn, $sql);
-                
-                }
-                ?>
+        <?php
+        $method = $_SERVER["REQUEST_METHOD"];
+        if ($method == "POST") {
+            //insert comment into comments table table
+            $comment = addslashes($_POST["comment"]);
+
+            $sql = "INSERT INTO `comments` (`comment_text`, `thread_id`, `user_id`, `comment_date`) VALUES ('$comment', '$id', '0', current_timestamp());";
+            $result = mysqli_query($conn, $sql);
+        }
+        ?>
 
         <div class="container mt-5">
             <div style="display:flex; flex-direction:row; justify-content:space-between; height:35px;">
                 <h3>Discussion</h3>
 
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-sm btn-success ms-2" data-bs-toggle="modal"
+
+                <?php if (isset($_SESSION["loggedIn"])) {
+                    echo '<button type="button" class="btn btn-sm btn-success ms-2" data-bs-toggle="modal"
                     data-bs-target="#addComment">
                     Add to Discussion
-                </button>
+                </button>';
+                } else {
+                    echo "Log in to comment on this thread.";
+                } ?>
+
+
             </div>
 
             <!-- Modal -->
@@ -68,7 +76,9 @@
                         </div>
                         <div class="modal-body">
 
-                            <form action="<?php $_SERVER['REQUEST_URI'] ?>" method="POST">
+                            <form action="<?php $_SERVER[
+                                "REQUEST_URI"
+                            ]; ?>" method="POST">
                                 <div class="mb-3">
                                     <div class="form-floating">
                                         <div class="mb-3">
@@ -95,21 +105,24 @@
 
         <div class="container mt-3">
 
-            <?php 
+            <?php
             // displays comments in threads page.
             $sql = "SELECT * FROM `comments` WHERE `thread_id` = $id";
             $result = mysqli_query($conn, $sql);
 
             while ($row = mysqli_fetch_assoc($result)) {
-                
                 echo '
                 <div class="container mt-3" style="background: #f2f2f2; border-radius:10px; padding: 15px;" >
-                <p style="font-size:18px">'.$row['comment_text'].'</p>
-                <p class="form-text">'.$row['comment_date'].'</p>
+                <p style="font-size:18px">' .
+                    $row["comment_text"] .
+                    '</p>
+                <p class="form-text">' .
+                    $row["comment_date"] .
+                    '</p>
                 </div>
-                '; }
-                
-                ?>
+                ';
+            }
+            ?>
         </div>
 
     </div>
@@ -118,7 +131,7 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
 
-    <?php include 'partials/_footer.php'?>
+    <?php include "partials/_footer.php"; ?>
 </body>
 
 </html>

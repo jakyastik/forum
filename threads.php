@@ -12,63 +12,67 @@
 
 <body>
     <div>
-        <?php 
+        <?php
+        include "partials/_header.php";
+        include "partials/_dbconnect.php";
 
-            include 'partials/_header.php'; 
-            include 'partials/_dbconnect.php';  
+        //--------------------------------------------------------------------------------------------get category and description
+        $id = $_GET["catId"];
+        $sql = "SELECT * FROM `categories` WHERE `category_id` = $id";
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_assoc($result);
 
-            //--------------------------------------------------------------------------------------------get category and description
-            $id = $_GET['catId'];
-            $sql = "SELECT * FROM `categories` WHERE `category_id` = $id";
-            $result = mysqli_query($conn, $sql);
-            $row = mysqli_fetch_assoc($result);
-
-            echo '<div class="container mt-5" style="border-bottom:1px solid #ccc; padding:20px 0px; margin:20px auto; ">
-                <h1>'.$row['category_name'].'</h1>
-                <h4 class="text-secondary">'.$row['category_description'].'</h4>
+        echo '<div class="container mt-5" style="border-bottom:1px solid #ccc; padding:20px 0px; margin:20px auto; ">
+                <h1>' .
+            $row["category_name"] .
+            '</h1>
+                <h4 class="text-secondary">' .
+            $row["category_description"] .
+            '</h4>
             </div>';
-            
-            //---------------------------------------------------------------------------------------post a new thread to the database. 
-            
-            $threadSuccess = false; 
-            
-            
-            $method = $_SERVER['REQUEST_METHOD'];
-            if (isset($_POST['submit_thread']) && ($method == 'POST')) {
-                //insert thread into DB
-                $thread_title = addslashes($_POST['title']);
-                $thread_description = addslashes($_POST['description']);
 
-                $sql = "INSERT INTO `threads` (`thread_title`, `thread_description`, `thread_user_id`, `thread_cat_id`) VALUES ('$thread_title', '$thread_description', '0', '$id');";
-                $result = mysqli_query($conn, $sql);
+        //---------------------------------------------------------------------------------------post a new thread to the database.
 
-                if ($result) { // Change here: Added success message
-                    $threadSuccess = true; 
-                } 
+        $threadSuccess = false;
+
+        //sql query to get user name from user id
+
+        $method = $_SERVER["REQUEST_METHOD"];
+        if (isset($_POST["submit_thread"]) && $method == "POST") {
+            $currentUserId = $_SESSION["userId"];
+            //insert thread into DB
+            $thread_title = addslashes($_POST["title"]);
+            $thread_description = addslashes($_POST["description"]);
+
+            $sql = "INSERT INTO `threads` (`thread_title`, `thread_description`, `thread_user_id`, `thread_cat_id`) VALUES ('$thread_title', '$thread_description', '$currentUserId', '$id');";
+            $result = mysqli_query($conn, $sql);
+
+            if ($result) {
+                // Change here: Added success message
+                $threadSuccess = true;
             }
-            ?>
+        }
+        ?>
 
         <!-- Form to Add Questions -->
-
-
-
         <div class="container mt-5">
 
-            <?php 
-            if ($threadSuccess) {
+            <?php if ($threadSuccess) {
                 echo '<div class="alert alert-success" role="alert">Yey. We\'ve added your thread to discussion. Awaiting replies. </div>';
-            }
-            ?>
+            } ?>
 
 
             <div style="display:flex; flex-direction:row; justify-content:space-between; height:35px;">
                 <h3>Discussion</h3>
 
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-sm btn-success ms-2" data-bs-toggle="modal"
+                <?php if (isset($_SESSION["loggedIn"])) {
+                    echo '<button type="button" class="btn btn-sm btn-success ms-2" data-bs-toggle="modal"
                     data-bs-target="#addThread">
                     + New Thread
-                </button>
+                </button>';
+                } else {
+                    echo "Log in to create a thread.";
+                } ?>
             </div>
 
             <!-- Modal -->
@@ -80,7 +84,9 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+                            <form action="<?php echo $_SERVER[
+                                "REQUEST_URI"
+                            ]; ?>" method="post">
                                 <div class="mb-3">
                                     <label for="title" class="form-label">Start a Discussion</label>
                                     <input type="text" class="form-control" name="title" id="title">
@@ -97,37 +103,48 @@
                 </div>
             </div>
 
-
-
-
             <?php
+            $id = $_GET["catId"];
+            //get threads data from threads table
+            $sql0 = "SELECT * FROM `threads` WHERE `thread_cat_id` = $id ORDER BY `thread_id` DESC";
+            $result = mysqli_query($conn, $sql0);
 
-            
-            
-            $id = $_GET['catId'];
-            $sql = "SELECT * FROM `threads` WHERE `thread_cat_id` = $id ORDER BY `thread_id` DESC";
-            $result = mysqli_query($conn, $sql);
-
-            $noResult = true;
-            
             while ($row = mysqli_fetch_assoc($result)) {
-                $noResult = false; 
-                echo '<div class="my-3 d-flex">
+                $threadId = $row["thread_id"];
+                $threadTitle = $row["thread_title"];
+                $threadDescription = $row["thread_description"];
+                $threadTime = $row["timestamp"];
+                $threadUserId = $row["thread_user_id"];
+
+                $sql2 = "SELECT user_email FROM `users` where user_id = $threadUserId;";
+                $result2 = mysqli_query($conn, $sql2);
+                $row2 = mysqli_fetch_assoc($result2);
+                $userEmail = $row2["user_email"];
+                $username = explode("@", $userEmail);
+
+                echo '<div class="my-3 d-flex" style="border-bottom:1px solid #ccc; padding:20px 0px;">
                 <div class="flex-shrink-2">
                     <img src="images/person-circle.svg" alt="...">
                 </div>
                 <div class="flex-grow-1 ms-3">
-                    <h4><a href="thread.php?threadId='.$row['thread_id'].'">'.$row['thread_title'].'</a></h4>
-                    <p>'.$row['thread_description'].'</p>
+                    <h4><a href="thread.php?threadId=' .
+                    $threadId .
+                    '">' .
+                    $threadTitle .
+                    '</a></h4>
+                    <p>' .
+                    $threadDescription .
+                    '</p>
+                    <div class="form-text">' .
+                    $username[0] .
+                    '</div>
                 </div>
             </div>';
             }
 
             if ($noResult) {
                 echo "Be the first person to ask a question";
-                
             }
-            
             ?>
 
 
@@ -136,7 +153,7 @@
     </div>
 
 
-    <?php include 'partials/_footer.php'?>
+    <?php include "partials/_footer.php"; ?>
     <script src=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>

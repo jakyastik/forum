@@ -20,22 +20,23 @@
             </ul>
 
             <?php
+            session_start();
 
-                session_start();
+            if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] == true) {
+                $username = explode("@", $_SESSION["userEmail"]);
 
-                if (isset($_SESSION['loggedIn']) && ($_SESSION['loggedIn'] == true)) {
-                    $username = explode('@', $_SESSION['userEmail']);
-                    
-                    echo '<form class="d-flex" role="search">
+                echo '<form class="d-flex" role="search">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                          <button class="btn btn-outline-success" type="submit">Search</button>
                          </form>
-                         
-                         <div class="mx-3"> '.$username[0].' <a href="partials/_handleLogout.php">(Log Out)</a> </div>';
-                }
 
-                if ($_SESSION['loggedIn'] != true) {
-                    echo '<div class="mx-2">
+                         <div class="mx-3"> ' .
+                    $username[0] .
+                    ' <a href="partials/_handleLogout.php">(Log Out)</a> </div>';
+            }
+
+            if ($_SESSION["loggedIn"] != true) {
+                echo '<div class="mx-2">
                 <a type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#loginModal">Log
                     in</a>
                  </div>
@@ -44,7 +45,7 @@
                     data-bs-target="#signupModal">Sign
                     Up</a>
                  </div>';
-                }
+            }
             ?>
 
 
@@ -56,14 +57,15 @@
 
 </nav>
 
-<?php 
-        include "_handleSignup.php";
-        include "_signupmodal.php";
-        include '_loginmodal.php'; 
+<?php
+include "_handleSignup.php";
+include "_signupmodal.php";
+include "_loginmodal.php";
 
-        session_start();
+session_start();
 
-        // error_reporting(E_ALL);
-        // ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+
 
 ?>
